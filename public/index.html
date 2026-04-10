@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+    <!-- ══════════════════════════════════════════
+         JOIN SCREEN
+    ══════════════════════════════════════════ -->
+    <div id="join-screen" class="screen active">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="join-card">
+        <div class="brand">
+          <span class="brand-icon">⬡</span>
+          <h1 class="brand-name">NEXUS</h1>
+          <p class="brand-tagline">Real-time · Rooms · Reactions · Replies</p>
+        </div>
+
+        <div class="form-group">
+          <label for="username-input" class="form-label">YOUR HANDLE</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">@</span>
+            <input type="text" id="username-input" class="form-input" placeholder="e.g. ShadowFox" maxlength="20" autocomplete="off" />
+          </div>
+          <span class="field-error" id="username-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="room-input" class="form-label">ROOM NAME</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">#</span>
+            <input type="text" id="room-input" class="form-input" placeholder="e.g. general" maxlength="30" autocomplete="off" />
+          </div>
+          <span class="field-error" id="room-error"></span>
+        </div>
+
+        <button id="join-btn" class="btn-primary">
+          <span class="btn-text">JOIN ROOM</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <p class="join-hint">Press Enter or click Join Room to start chatting</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         CHAT SCREEN
+    ══════════════════════════════════════════ -->
+    <div id="chat-screen" class="screen">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span class="brand-icon-sm">⬡</span>
+          <span class="brand-name-sm">NEXUS</span>
+        </div>
+        <div class="room-info">
+          <div class="room-label">CURRENT ROOM</div>
+          <div class="room-name-display" id="room-display">#general</div>
+        </div>
+        <div class="users-section">
+          <div class="users-label">ONLINE <span class="user-count" id="user-count">0</span></div>
+          <ul class="user-list" id="user-list"></ul>
+        </div>
+        <button id="leave-btn" class="btn-leave">⬡ LEAVE ROOM</button>
+      </aside>
+
+      <!-- Main chat area -->
+      <main class="chat-main">
+
+        <!-- Header -->
+        <header class="chat-header">
+          <div class="chat-header-left">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">☰</button>
+            <div class="chat-room-info">
+              <span class="chat-room-name" id="chat-room-name">#general</span>
+              <span class="chat-room-status">● LIVE</span>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <span class="header-user-badge" id="header-username">@you</span>
+          </div>
+        </header>
+
+        <!-- Messages -->
+        <div class="messages-container" id="messages"></div>
+
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="typing-indicator">
+          <span class="typing-dots"><span></span><span></span><span></span></span>
+          <span class="typing-text" id="typing-text"></span>
+        </div>
+
+        <!-- ── REPLY PREVIEW BAR (shows above input when replying) ── -->
+        <div class="reply-bar" id="reply-bar" style="display:none;">
+          <div class="reply-bar-inner">
+            <div class="reply-bar-content">
+              <span class="reply-bar-label">↩ Replying to <strong id="reply-to-name"></strong></span>
+              <span class="reply-bar-text" id="reply-to-text"></span>
+            </div>
+            <button class="reply-cancel-btn" id="reply-cancel-btn" aria-label="Cancel reply">✕</button>
+          </div>
+        </div>
+
+        <!-- Input bar -->
+        <footer class="input-bar">
+          <div class="input-bar-inner">
+            <input type="text" id="msg-input" class="msg-input" placeholder="Type a message…" maxlength="500" autocomplete="off" />
+            <button id="emoji-btn" class="emoji-btn" title="Emoji">😊</button>
+            <button id="send-btn" class="send-btn" aria-label="Send message">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Emoji Picker -->
+          <div class="emoji-picker" id="emoji-picker">
+            <div class="emoji-grid">
+              😀 😂 😍 🥰 😎 🤔 😅 🙌 🔥 💯 👍 👋
+              ❤️ 🎉 🚀 ✨ 💬 🤝 😢 😡 🤣 😇 🥳 💪
+            </div>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         REACTION PICKER POPUP (shared, moved by JS)
+    ══════════════════════════════════════ -->
+    <div class="reaction-picker-popup" id="reaction-picker-popup">
+      <button class="rpick-emoji" data-emoji="👍">👍</button>
+      <button class="rpick-emoji" data-emoji="❤️">❤️</button>
+      <button class="rpick-emoji" data-emoji="😂">😂</button>
+      <button class="rpick-emoji" data-emoji="😮">😮</button>
+      <button class="rpick-emoji" data-emoji="😢">😢</button>
+      <button class="rpick-emoji" data-emoji="🔥">🔥</button>
+      <button class="rpick-emoji" data-emoji="🎉">🎉</button>
+      <button class="rpick-emoji" data-emoji="💯">💯</button>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         EYE-CATCHER NOTIFICATION BUBBLE
+         Floats bottom-right when tab is hidden
+    ══════════════════════════════════════ -->
+    <div class="notif-bubble" id="notif-bubble" style="display:none;">
+      <div class="notif-gif-wrap">
+        <!-- Animated attention-grabber using CSS (no external GIF needed) -->
+        <div class="notif-icon-anim" aria-hidden="true">⬡</div>
+      </div>
+      <div class="notif-info">
+        <span class="notif-title">New message!</span>
+        <span class="notif-preview" id="notif-preview">Someone said something…</span>
+      </div>
+      <button class="notif-close" id="notif-close" aria-label="Dismiss">✕</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
