@@ -1,0 +1,23 @@
+# Dependencies (never upload these - can be recreated with npm install)
+node_modules/
+
+# Environment variables (keep secrets safe)
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files (Windows/Mac junk files)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Build output (if you add a build step later)
+dist/
+build/
