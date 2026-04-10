@@ -1,4 +1,6 @@
 # ⬡ Nexus Chat
+## live now
+**[click here](https://nexus-chat-ho4g.onrender.com)**
 
 > A real-time chat application built with Node.js, Express, and Socket.io
 
